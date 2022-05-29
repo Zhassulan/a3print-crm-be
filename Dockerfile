@@ -1,11 +1,11 @@
-FROM docker.tele2.kz/nginx:latest
+FROM nginx:latest
 ARG ENV
 ENV TZ Asia/Almaty
 ENV DEBIAN_FRONTEND noninteractive
-COPY ./src/utils/${ENV}/nginx /etc/logrotate.d/nginx
-COPY ./src/utils/${ENV}/entrypoint.sh /entrypoint.sh
-COPY ./src/utils/${ENV}/nginx.conf /etc/nginx/nginx.conf
-COPY ./src/utils/${ENV}/entrypoint.sh /entrypoint.sh
+COPY ./docker/nginx /etc/logrotate.d/nginx
+COPY ./docker/entrypoint.sh /entrypoint.sh
+COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+COPY ./docker/entrypoint.sh /entrypoint.sh
 
 USER root
 RUN rm /etc/nginx/conf.d/default.conf \
@@ -16,5 +16,4 @@ RUN rm /etc/nginx/conf.d/default.conf \
 COPY dist /usr/share/nginx/html
 EXPOSE 80/tcp
 VOLUME /var/log/nginx
-#HEALTHCHECK --interval=1m --timeout=10s --start-period=90s CMD /healthcheck.sh
 ENTRYPOINT ["/entrypoint.sh"]
