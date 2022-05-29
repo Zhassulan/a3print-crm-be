@@ -5,7 +5,7 @@ var dbo = require('../db/conn');
 router.get('/', function (req, res, next) {
 
     const dbConnect = dbo.getDb();
-    dbConnect.collection("listingsAndReviews")
+    dbConnect.collection('persons')
         .find({}).limit(50)
         .toArray(function (err, result) {
             if (err) {
@@ -17,18 +17,22 @@ router.get('/', function (req, res, next) {
 });
 
 // This section will help you create a new document.
-router.get('/', function (req, res, next) {
+router.post('/', function (req, res, next) {
 
     const dbConnect = dbo.getDb();
-    const matchDocument = {
-        listing_id: req.body.id,
-        last_modified: new Date(),
-        session_id: req.body.session_id,
-        direction: req.body.direction
+    if (dbConnect) {
+
+    } else {
+        res.status(500).send("Database error");
+    }
+    const person = {
+        id: 1,
+        name: 'Person',
+        last_modified: new Date()
     };
 
-    dbConnect.collection("matches")
-        .insertOne(matchDocument, function (err, result) {
+    dbConnect.collection('persons')
+        .insertOne(person, function (err, result) {
             if (err) {
                 res.status(400).send("Error inserting matches!");
             } else {

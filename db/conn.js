@@ -14,8 +14,7 @@ module.exports = {
                 return callback(err);
             }
 
-            dbConnection = db.db("a3");
-            console.log("Successfully connected to MongoDB.");
+            dbConnection = db.db('a3print-crm');
 
             return callback();
         });
