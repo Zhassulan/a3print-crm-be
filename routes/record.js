@@ -6,7 +6,8 @@ router.get('/', function (req, res, next) {
 
     const dbConnect = dbo.getDb();
     dbConnect.collection('persons')
-        .find({}).limit(50)
+        .find({})
+        .limit(50)
         .toArray(function (err, result) {
             if (err) {
                 res.status(400).send("Error fetching listings!");
@@ -20,13 +21,13 @@ router.get('/', function (req, res, next) {
 router.post('/', function (req, res, next) {
 
     const dbConnect = dbo.getDb();
-    if (dbConnect) {
 
-    } else {
+    if (!dbConnect) {
         res.status(500).send("Database error");
+        return;
     }
+
     const person = {
-        id: 1,
         name: 'Person',
         last_modified: new Date()
     };
@@ -34,9 +35,9 @@ router.post('/', function (req, res, next) {
     dbConnect.collection('persons')
         .insertOne(person, function (err, result) {
             if (err) {
-                res.status(400).send("Error inserting matches!");
+                res.status(400).send("Error inserting!");
             } else {
-                console.log(`Added a new match with id ${result.insertedId}`);
+                console.log(`Added a new with id ${result._id}`);
                 res.status(204).send();
             }
         });

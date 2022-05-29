@@ -1,26 +1,19 @@
 const {MongoClient} = require('mongodb');
-const connectionString = process.env.DB_URI;
-const client = new MongoClient(connectionString, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+const CONN_STRING = process.env.DB_URI;
+const DB_NAME = process.env.DB_NAME;
 
-let dbConnection;
+const mongoClient = new MongoClient(CONN_STRING);
+let db;
+
+async function run() {
+    await mongoClient.connect();
+    db = mongoClient.db(DB_NAME);
+}
+
+run().catch(console.dir);
 
 module.exports = {
-    connectToServer: function (callback) {
-        client.connect(function (err, db) {
-            if (err || !db) {
-                return callback(err);
-            }
-
-            dbConnection = db.db('a3print-crm');
-
-            return callback();
-        });
-    },
-
     getDb: function () {
-        return dbConnection;
-    },
+        return db;
+    }
 };
