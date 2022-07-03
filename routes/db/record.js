@@ -2,10 +2,14 @@ var express = require('express');
 var router = express.Router();
 var dbo = require('../../db/conn');
 
+const kittySchema = new mongoose.Schema({
+    name: String
+  });
+  
 router.get('/', function (req, res, next) {
 
-    const dbConnect = dbo.getDb();
-    dbConnect.collection('persons')
+    const mongoose = dbo.getMongoose();
+    mongoose.collection('persons')
         .find({})
         .limit(50)
         .toArray(function (err, result) {
